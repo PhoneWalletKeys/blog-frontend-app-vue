@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">Navbar</a>
       <button
         class="navbar-toggler"
@@ -53,21 +53,35 @@
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
-    </nav>
+    </nav> -->
     <div id="nav">
-      <router-link to="/home">Home</router-link>
+      <li>
+        <router-link to="/home">Home</router-link>
+      </li>
       |
-      <router-link to="/test">Test</router-link>
+      <li v-if="!isLoggedIn()">
+        <router-link to="/signup">Signup</router-link>
+      </li>
       |
-      <router-link to="/signup">Signup</router-link>
+      <li v-if="!isLoggedIn()">
+        <router-link to="/login">Login</router-link>
+      </li>
       |
-      <router-link to="/login">Login</router-link>
+      <li v-if="!isLoggedIn()">
+        <router-link to="/logout">Logout</router-link>
+      </li>
       |
-      <router-link to="/posts">Posts</router-link>
+      <li>
+        <router-link to="/about">About</router-link>
+      </li>
       |
-      <router-link to="/about">About</router-link>
+      <li>
+        <router-link to="/posts">Posts</router-link>
+      </li>
       |
-      <router-link to="/posts/new">Create</router-link>
+      <li>
+        <router-link to="/posts/new">Create</router-link>
+      </li>
     </div>
     <router-view />
   </div>
@@ -82,17 +96,20 @@
   color: #2c3e50;
   background-image: url("./assets/email-pattern.png");
 }
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
+
+<script>
+// import axios from "axios"
+
+export default {
+  methods: {
+    isLoggedIn: function () {
+      if (localStorage.getItem("jwt")) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+};
+</script>

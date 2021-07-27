@@ -1,6 +1,7 @@
 <template>
-  <div class="newpost">
-    <form v-on:submit.prevent="submit()">
+  <div class="posts-new">
+     <img v-if="status" :src="`https://http.cat/${status}`" />
+    <form v-on:submit.prevent="createPost()">
       <h1>Create Post</h1>
       <ul>
         <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
@@ -22,7 +23,7 @@
         <img v-bind:src="post.image" alt="post.title" />
         <button>More info!</button>
       </div>
-      <input type="submit" value="submit"/>
+      <input type="submit" value="submit" />
     </form>
   </div>
 </template>
@@ -37,16 +38,21 @@ export default {
       posts: [],
       newPostParams: {},
       errors: [],
+      status: "",
     };
   },
-  created: function () {},
-
   methods: {
     createPosts: function () {
-      axios.post("/posts", this.newPostParams).then((response) => {
-        this.$router.push("/posts");
-        console.log(response.data);
-      });
+      console.log("Creating post!");
+      axios
+        .post("/posts", this.newPostParams)
+        .then((response) => {
+          this.$router.push("/posts");
+          console.log(response.data);
+        })
+        .catch((error) => {
+          this.status = error.response.status;
+        });
     },
   },
 };
